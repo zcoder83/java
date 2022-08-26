@@ -3,12 +3,26 @@ package com.twoDimensionalArray;
 public class Main {
     public static void main(String[] args) {
         int[][] integers = {
-                {1, 2, 3, 4},
-                {5, 6, 7, 8},
-                {9, 10, 11, 12}
+                {1, 10, 3, 8},
+                {9, 12, 6, 7},
+                {5, 2, 11, 4}
         };
-        printArrayByRow(integers);
-        printArrayByColumn(integers);
+        getMaxNumber(integers);
+        //printArrayByRow(integers);
+        //printArrayByColumn(integers);
+    }
+
+    public static void getMaxNumber(int[][] integers) {
+        int maxNumber;
+        for (int i = 0; i < integers.length; i++) {
+            maxNumber = integers[i][0];
+            for (int j = 1; j < integers[i].length; j++) {
+                if (maxNumber < integers[i][j]) {
+                    maxNumber = integers[i][j];
+                }
+            }
+            System.out.println("Max of Row " + (i + 1) + ": " + maxNumber);
+        }
     }
     public static void printArrayByRow(int[][] integers) {
         for (int i=0; i<integers.length; i++){
