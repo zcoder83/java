@@ -1,1 +1,0 @@
-repository for java projects
