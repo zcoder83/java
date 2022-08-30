@@ -1,8 +1,9 @@
 package workshop03;
 
-public class TriangleException extends Exception {
+// creating specific exception
+public class TriangleException extends Exception { // extending other exception is OK, but as convention reason, extend Exception
 	public TriangleException (double side) {
-		super(side + " is bigger than the sum of other two sides");
+		super(side + " is bigger than the sum of other two sides"); // passing error message
 	}
 	
 }

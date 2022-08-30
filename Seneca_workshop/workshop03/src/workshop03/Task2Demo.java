@@ -29,7 +29,7 @@ public class Task2Demo {
 			System.out.println("Filled: " + t2.getFilled());
 			
 		} catch(TriangleException e) {
-			System.out.println(e.getMessage());
+			System.out.println(e.getMessage()); 
 		}
 	}
 
