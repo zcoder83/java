@@ -1,7 +1,5 @@
 package com.ClassAndObject;
 
-import jdk.incubator.foreign.CLinker;
-
 import java.util.ArrayList;
 
 public class Client {
@@ -36,9 +34,9 @@ public class Client {
     }
     public String toString() {
         String allInfo;
-        allInfo = "Client ID: " + id + ", Name: " + name + ", PHone: " + phone;
+        allInfo = "Client ID: " + id + ", Name: " + name + ", Phone: " + phone + "\n";
         for (Account account : accounts) {
-            allInfo += account.toString();
+            allInfo += account + "\n";
         }
         return allInfo;
     }

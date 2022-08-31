@@ -1,24 +1,30 @@
 package com.ClassAndObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
     public static void main (String[] args) {
-        // this code is for Account class
-        Account testAccount = new Account(1122, 20000, 4.5);
+        Client client = new Client(1, "yeon", "333-3333");
 
-        if (testAccount.withdraw(2500)) {
-            System.out.println("Widthraw successful!!!");
-        } else {
-            System.out.println("Failed: Not enough balance!!!");
+        ArrayList<Account> accounts = new ArrayList<>();
+        accounts.add(new Account(1111, 1000, 1.5, client));
+        accounts.add(new Account(1112, 2000, 2.5, client));
+
+        accounts.get(0).deposit(300);
+        accounts.get(0).withdraw(500);
+        accounts.get(1).withdraw(800);
+        System.out.println(client);
+        for (Account account : accounts) {
+            System.out.println(account.toString() + "Withdraw: "+ account.countTransaction('W') + ", Deposit: " + account.countTransaction('D'));
         }
-        testAccount.deposit(3000);
-        System.out.println("Your account");
-        System.out.println("ID: " + testAccount.getId());
-        System.out.println("Balance: " + testAccount.getBalance());
-        System.out.println("Annual Interest Rate: " + testAccount.getAnnualInterestRate());
-        System.out.println("Created Date: " + testAccount.getDateCreated());
+        //clients[0].addAccount(new Account(1111, 1000, 1.5));
+        //clients[0].addAccount(new Account(1112, 2000, 2.5));
+        //clients[1].addAccount(new Account(2111, 3000, 3.5));
+        //clients[1].addAccount(new Account(2112, 5000, 4.5));
+        //clients[1].addAccount(new Account(2113, 1000, 1.5));
+
 
         // this code is for Rectangle class exercise
         //Scanner input = new Scanner(System.in);
