@@ -2,10 +2,10 @@ package com.example.snakegame;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -27,13 +26,14 @@ public class SnakeApplication extends Application {
     static int height = 20;
     static int foodX = 0;
     static int foodY = 0;
-    static int cornerSize = 25;
+    static int cornerSize = 30;
 
     static List<Corner> snake = new ArrayList<>();
     static Dir direction = Dir.LEFT;
     static boolean gameOver = false;
     static Random rand = new Random();
 
+    static int score = 0;
 
 
     @Override
@@ -43,13 +43,13 @@ public class SnakeApplication extends Application {
         VBox root = new VBox();
         Canvas c = new Canvas(width * cornerSize, height * cornerSize);
 
-        // to paint snake
-        GraphicsContext gc = c.getGraphicsContext2D();
-        root.getChildren().add(c);
+        GraphicsContext gc = c.getGraphicsContext2D(); // get graphic content
+        root.getChildren().add(c); // add canvas to VBox
 
         new AnimationTimer() {
             long lastTick = 0;
 
+            // I don't understand this handle() method below
             public void handle(long now) {
                 if(lastTick == 0) {
                     lastTick = now;
@@ -100,7 +100,7 @@ public class SnakeApplication extends Application {
             gc.fillText("GAME OVER", 100, 200);
             return;
         }
-
+        // move the rest of snake part
         for (int i=snake.size()-1; i>=1; i--) {
             snake.get(i).x = snake.get(i-1).x;
             snake.get(i).y = snake.get(i-1).y;
@@ -134,9 +134,11 @@ public class SnakeApplication extends Application {
         }
         // eat food
         if (foodX == snake.get(0).x && foodY == snake.get(0).y) {
-            snake.add(new Corner(-1, -1));
+            snake.add(new Corner(-1, -1)); // add snake out of canvas
             newFood();
+            score += 100;
         }
+
 
         // self destroy
         for (int i=1; i<snake.size(); i++) {
@@ -152,7 +154,12 @@ public class SnakeApplication extends Application {
         // fill score
         gc.setFill(Color.WHITE);
         gc.setFont(new Font("", 30));
-        gc.fillText("Score: ", +(speed-6), 10, 30);
+        gc.fillText("Score: ", 10, 30);
+
+        // score value
+        gc.setFill(Color.WHITE);
+        gc.setFont(new Font("", 30));
+        gc.fillText("" + score, 100, 30);
 
         // random foodColor
         Color cc = Color.WHITE;
@@ -178,12 +185,26 @@ public class SnakeApplication extends Application {
         gc.fillOval(foodX*cornerSize, foodY*cornerSize, cornerSize, cornerSize);
 
         // snake color
-        for (Corner c: snake) {
-            gc.setFill(Color.LIGHTGREEN);
-            gc.fillRect(c.x*cornerSize, c.y*cornerSize, cornerSize-1, cornerSize-1);
-            gc.setFill(Color.GREEN);
-            gc.fillRect(c.x*cornerSize, c.y*cornerSize, cornerSize-2, cornerSize-2);
+        //for (Corner c: snake) {
+        //    gc.setFill(Color.LIGHTGREEN);
+        //    gc.fillRect(c.x*cornerSize, c.y*cornerSize, cornerSize-1, cornerSize-1);
+        //    gc.setFill(Color.GREEN);
+        //    gc.fillRect(c.x*cornerSize, c.y*cornerSize, cornerSize-2, cornerSize-2);
+        //}
 
+        // different color for head of snake
+        for (int i=0; i<snake.size(); ++i) {
+            if(i == 0) {
+                gc.setFill(Color.BROWN);
+                gc.fillRect(snake.get(i).x*cornerSize, snake.get(i).y*cornerSize, cornerSize-1, cornerSize-1);
+                gc.setFill(Color.WHITE);
+                gc.fillRect(snake.get(i).x*cornerSize, snake.get(i).y*cornerSize, cornerSize-2, cornerSize-2);
+            } else {
+                gc.setFill(Color.LIGHTGREEN);
+                gc.fillRect(snake.get(i).x*cornerSize, snake.get(i).y*cornerSize, cornerSize-1, cornerSize-1);
+                gc.setFill(Color.GREEN);
+                gc.fillRect(snake.get(i).x*cornerSize, snake.get(i).y*cornerSize, cornerSize-2, cornerSize-2);
+            }
         }
     }
 
