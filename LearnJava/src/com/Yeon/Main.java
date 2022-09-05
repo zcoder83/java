@@ -1,11 +1,30 @@
 package com.Yeon;
 
 import java.awt.*;
-import java.util.Scanner;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.*;
+
 
 public class Main {
-    public static void main(String[] args) {
-        Yeon yeon = new Yeon();
+
+public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        //BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        String[] firstMultipleInput = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+        //String[] firstMultipleInput = bufferedReader.readLine().split(" ");
+
+        int month = Integer.parseInt(firstMultipleInput[0]);
+
+        int day = Integer.parseInt(firstMultipleInput[1]);
+
+        int year = Integer.parseInt(firstMultipleInput[2]);
+
+    System.out.println(month + " " + day + " " + year);
+
+        bufferedReader.close();
+        //bufferedWriter.close();
     }
 }
 //public class Main {
