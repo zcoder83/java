@@ -1,12 +1,9 @@
-package com.Yeon;
+package com.NoOfOccurenceOfCharacters;
 
-import java.util.Arrays;
-
-class Main {
+public class NoOfOccurenceOfCharacters {
     static final int MAX_CHAR = 256;
 
-    static void getOccuringChar(String str)
-    {
+    static void getOccuringChar(String str) {
 
         // Create an array of size 256
         // i.e. ASCII_SIZE
@@ -15,11 +12,9 @@ class Main {
         int len = str.length();
 
         // Initialize count array index
-        for (int i = 0; i < len; i++) {
-            count[str.charAt(i)]++;
-            System.out.print(str.charAt(i));
-        }
-        System.out.println(Arrays.toString(count));
+        for (int i = 0; i < len; i++)
+            count[str.charAt(i)]++; // ascii number of str.charAt(i), increment each character
+
         // Create an array of given String size
         char ch[] = new char[str.length()];
         for (int i = 0; i < len; i++) {
@@ -31,18 +26,17 @@ class Main {
                 if (str.charAt(i) == ch[j])
                     find++;
             }
-
+            // skip when find variable is greater than 1, which means already print before
             if (find == 1)
                 System.out.println(
-                    "Number of Occurrence of "
-                    + str.charAt(i)
-                    + " is:" + count[str.charAt(i)]);
+                        "Number of Occurrence of "
+                                + str.charAt(i)
+                                + " is:" + count[str.charAt(i)]);
         }
     }
 
     // Driver Code
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         String str = "geeksforgeeks";
         getOccuringChar(str);
     }
