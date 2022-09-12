@@ -10,15 +10,16 @@ public class FindRepeatWords {
         int num = Integer.parseInt(input.nextLine());
 
         // regular expression
-        String regex = "\\b(\\w+)(?:\\W+\\1\\b)+";
+        String regex = "\\b(\\w+)(?:\\W+\\1\\b)+"; // b: word boundary, w: word, +: one or more, 1: match the result of group 1, which is (\w+)
 
 
         while(num-- > 0) {
             String str = input.nextLine();
 
             Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-            Matcher m = p.matcher(str);
+            Matcher m = p.matcher(str); // try to match input string by regex with no case-sensitive.
             while (m.find()) {
+                // replace matching group with first matching one.
                 str = str.replaceAll(m.group(), m.group(1));
             }
             System.out.println(str);
