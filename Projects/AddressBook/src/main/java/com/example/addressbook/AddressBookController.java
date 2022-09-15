@@ -10,6 +10,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
@@ -63,6 +65,7 @@ public class AddressBookController implements Initializable {
         if(errorMsg == ""){
             if (addUser())
             btnMessage.setText("Added user!!!");
+            fetUsers();
         } else {
             btnMessage.setText(errorMsg);
         }
@@ -74,8 +77,9 @@ public class AddressBookController implements Initializable {
 
     @FXML
     void reloadUserOnAction(ActionEvent event) {
-
+        fetUsers();
     }
+
 
     @FXML
     void updateUserOnAction(ActionEvent event) {
@@ -84,20 +88,9 @@ public class AddressBookController implements Initializable {
     @FXML
     private Label btnMessage;
 
-    ObservableList<User> list = FXCollections.observableArrayList(
-            new User(1, "yeon", "333-444-5555", "yeon@mail.com"),
-            new User(2, "mie", "333-444-5555", "yeon@mail.com"),
-            new User(3, "chen", "333-444-5555", "yeon@mail.com"),
-            new User(4, "park", "333-444-5555", "yeon@mail.com")
-    );
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        tbId.setCellValueFactory(new PropertyValueFactory<User, Integer>("id"));
-        tbName.setCellValueFactory(new PropertyValueFactory<User, String>("name"));
-        tbPhone.setCellValueFactory(new PropertyValueFactory<User, String>("phone"));
-        tbEmail.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
-
-        table.setItems(list);
+        fetUsers();
     }
     public String validateUserInformation() {
         String name = tfName.getText();
@@ -138,5 +131,30 @@ public class AddressBookController implements Initializable {
             e.printStackTrace();
         }
         return false;
+    }
+    public void fetUsers(){
+
+        String sql = "SELECT * FROM users";
+        Connection con = DatabaseConnection.getConnection();
+        ObservableList<User> list = FXCollections.observableArrayList();
+        try {
+            ResultSet rs = con.createStatement().executeQuery(sql);
+            while(rs.next()) {
+                User us = new User();
+                us.setId(rs.getInt("id"));
+                us.setName(rs.getString("name"));
+                us.setEmail(rs.getString("email"));
+                us.setPhone(rs.getString("phone"));
+                list.add(us);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        tbId.setCellValueFactory(new PropertyValueFactory<User, Integer>("id"));
+        tbName.setCellValueFactory(new PropertyValueFactory<User, String>("name"));
+        tbPhone.setCellValueFactory(new PropertyValueFactory<User, String>("phone"));
+        tbEmail.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
+
+        table.setItems(list);
     }
 }
