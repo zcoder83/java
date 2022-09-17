@@ -65,6 +65,7 @@ public class AddressBookController implements Initializable {
         if(errorMsg == ""){
             if (addUser())
             btnMessage.setText("Added user!!!");
+            clearTextField();
             fetUsers();
         } else {
             btnMessage.setText(errorMsg);
@@ -72,26 +73,65 @@ public class AddressBookController implements Initializable {
     }
     @FXML
     void deleteUserOnAction(ActionEvent event) {
+        Connection con = DatabaseConnection.getConnection();
+        String sql = "";
+        // to get id value from table
+        try {
+            User user = table.getSelectionModel().getSelectedItem();
+            Statement statement =con.createStatement();
+            int id = user.getId();
+            sql = "DELETE FROM users WHERE id = '" + id + "'";
+            statement.executeUpdate(sql);
+            fetUsers();
+            clearTextField();
+            btnMessage.setText("Successfully deleted!!!");
 
+        } catch (Exception e) {
+            btnMessage.setText("Select user who you want to delete");
+            System.out.println(e.getMessage());
+        }
     }
 
     @FXML
     void reloadUserOnAction(ActionEvent event) {
         fetUsers();
+        clearTextField();
     }
 
 
     @FXML
     void updateUserOnAction(ActionEvent event) {
+        Connection con = DatabaseConnection.getConnection();
+        String sql = "";
+        try {
+            String name = tfName.getText();
+            String phone = tfPhone.getText();
+            String email = tfEmail.getText();
+            // to get id value from table
+            User user = table.getSelectionModel().getSelectedItem();
+            Statement statement =con.createStatement();
+            int id = user.getId();
+            sql = "UPDATE users SET name = '" + name + "', phone = '" + phone + "', email = '" + email + "' WHERE id = '" + id + "'";
+            statement.executeUpdate(sql);
+            fetUsers();
+            btnMessage.setText("Successfully updated!!!");
+
+        } catch (Exception e) {
+            btnMessage.setText("Select user who you want to update");
+            System.out.println(e.getMessage());
+        }
 
     }
     @FXML
     private Label btnMessage;
 
     @Override
+    // initialization
     public void initialize(URL url, ResourceBundle resourceBundle) {
         fetUsers();
     }
+
+    // validate data from text fields.
     public String validateUserInformation() {
         String name = tfName.getText();
         String phone = tfPhone.getText();
@@ -132,6 +172,8 @@ public class AddressBookController implements Initializable {
         }
         return false;
     }
+
+    // fetch all users' data and display it in table view
     public void fetUsers(){
 
         String sql = "SELECT * FROM users";
@@ -156,5 +198,27 @@ public class AddressBookController implements Initializable {
         tbEmail.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
 
         table.setItems(list);
+    }
+
+    // remove all text in text fields
+    public void clearTextField(){
+        tfName.setText("");
+        tfPhone.setText("");
+        tfEmail.setText("");
+    }
+
+    // display selected row's data in text fields so that it can be modified.
+    public void displaySelected(javafx.scene.input.MouseEvent mouseEvent) {
+        User user = table.getSelectionModel().getSelectedItem();
+        if (user == null) {
+
+        } else {
+            String name = user.getName();
+            String phone = user.getPhone();
+            String email = user.getEmail();
+            tfName.setText(name);
+            tfPhone.setText(phone);
+            tfEmail.setText(email);
+        }
     }
 }

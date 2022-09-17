@@ -53,7 +53,7 @@
             <Font name="Helvetica" size="16.0" />
          </font>
       </Label>
-      <TableView fx:id="table" layoutX="13.0" layoutY="252.0" prefHeight="179.0" prefWidth="511.0">
+      <TableView fx:id="table" layoutX="13.0" layoutY="252.0" onMouseClicked="#displaySelected" prefHeight="179.0" prefWidth="511.0">
         <columns>
           <TableColumn fx:id="tbId" prefWidth="32.666686058044434" text="No" />
           <TableColumn fx:id="tbName" prefWidth="156.00003051757812" text="Name" />
